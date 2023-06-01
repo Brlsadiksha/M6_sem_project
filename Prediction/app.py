@@ -42,9 +42,9 @@ avg = df['spot price(Euro/Mwh)'].mean().round(2)
 # streamlit
 st.sidebar.header("Electric Price Prediction")
 st.sidebar.metric("Today", today_str, delta=None, delta_color="inverse", help=None, label_visibility="visible")
-st.sidebar.metric("Hight Price", high, delta=None, delta_color="inverse", help=None, label_visibility="visible")
+st.sidebar.metric("Highest Price", high, delta=None, delta_color="inverse", help=None, label_visibility="visible")
 st.sidebar.metric("Average Price", avg, delta=None, delta_color="inverse", help=None, label_visibility="visible")
-st.sidebar.metric("Low Price", low, delta=None, delta_color="inverse", help=None, label_visibility="visible")
+st.sidebar.metric("Lowest Price", low, delta=None, delta_color="inverse", help=None, label_visibility="visible")
 st.title(" Electric Price Prediction")
 
 st.markdown('Prediction Price :') 

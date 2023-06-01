@@ -24,13 +24,13 @@ Hello! you can find in this Repo all the technical information regading the mode
    <br> This fetch the data till today's midnight (23:00) and train the model and save it into the mlflow.
    
     `unicorn prediction:app --reload`
-   <br> This will get the model from mlflow and do the prediction and provide the localhost for us to see the prediction
+   <br> This will get the model from mlflow and do the prediction and run fastapi for us to see the prediction
    
     `localhost:8000/predict/24`
-  <br> We can see the prediction for 24hrs in our local host. If we want to predict for more or less hour than 24, we can just change the number 24 to number of hours we want to predict. 
+  <br> We can see the prediction for 24hrs starting from today midnight. If we want to predict for more or less hour than 24, we can just change the number 24 to number of hours we want to predict. 
   
     `streamlit run app.py`
-  <br> To see our streamlit app
+  <br> To run our streamlit app
   
   
 - Preprocessing

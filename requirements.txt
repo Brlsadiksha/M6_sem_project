@@ -2,3 +2,9 @@ pandas
 numpy
 darts
 matplotlib
+streamlit
+fastapi
+requests
+xmltodict
+streamlit-extras
+

@@ -11,7 +11,10 @@ from darts import TimeSeries
 from darts.models import ExponentialSmoothing
 
 import mlflow
+from darts.metrics import rmse, r2_score
+from forex_python.converter import CurrencyRates
 
+c = CurrencyRates() # EUR to DKK
 
 days_past = 180 # 6 months 
 end_date = (datetime.today() + timedelta(days=1)).strftime("%Y-%m-%d") # tomorrow's date, As API gives us price until today midnight.  
@@ -83,8 +86,11 @@ for api_day_data in dict_data["TimeSeries"]: #each day is a dict
     #generating datatime for 24 hr
     api_ts = api_day_data["Period"]["Point"]
 
+    day_date_object = datetime.strptime(start, '%Y%m%d%H%M')
+    exchange_rate = c.get_rate('EUR', 'DKK', day_date_object)
+
     for hour in api_ts[:24]: # limit to 24 in case of duplicate, the date_range values always has 24 hr sometime API gives 23 or 25 values because of change in timezone. if 25 limit to 24
-        day_values.append(float(hour["price.amount"]))
+        day_values.append((float(hour["price.amount"])/1000) * exchange_rate)
     
     while len(day_values) < 24: #if 23 values add nan 
         day_values.append(np.NaN)
@@ -105,9 +111,10 @@ median_price = df['price'].median() #for the missing values
 
 filled_series = TimeSeries.from_dataframe(df, time_col="date", value_cols ="price", fill_missing_dates=True, fillna_value=median_price, freq="H") # use this for training, add missing dates and filled with median values 
 
-data_path = f"data/data_{end_date}.csv"
+data_path = f"Daily_DATA/data_{end_date}.csv"
 filled_series.to_csv(data_path)
 print("Data saved to : ", data_path)
+
 
 print("Training and saving model")
 # Training and saving to mlflow
@@ -117,6 +124,8 @@ mlflow.sklearn.autolog()
 
 model_es = ExponentialSmoothing(seasonal_periods=24)
 model_es.fit(filled_series)
+
+
 mlflow.sklearn.log_model(model_es, "model_es_pred")
 
 # Register the model in the MLflow registry
@@ -126,3 +135,15 @@ model_version = mlflow.register_model(model_uri, "model_es_pred")
 
 mlflow.end_run()
 print("Training ended")
+
+print("Calculating and saving historical forecast")
+historical_forecast_es = model_es.historical_forecasts(
+    filled_series, start=0.8,  forecast_horizon=24, stride=24, verbose=True)
+
+es_rmse = rmse(historical_forecast_es, filled_series)
+print("RMSE historical forecast = {:.2f}".format(es_rmse))
+
+historical_forecast_data = f"Daily_DATA/historical-forecast_{end_date}.csv"
+filled_series.to_csv(historical_forecast_data)
+print("Historical forecast data saved to : ", historical_forecast_data)
+

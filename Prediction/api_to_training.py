@@ -138,12 +138,13 @@ print("Training ended")
 
 print("Calculating and saving historical forecast")
 historical_forecast_es = model_es.historical_forecasts(
-    filled_series, start=0.8,  forecast_horizon=24, stride=24, verbose=True)
+    filled_series, start=0.95,  forecast_horizon=24, verbose=True)
 
 es_rmse = rmse(historical_forecast_es, filled_series)
 print("RMSE historical forecast = {:.2f}".format(es_rmse))
 
 historical_forecast_data = f"Daily_DATA/historical-forecast_{end_date}.csv"
-filled_series.to_csv(historical_forecast_data)
+historical_forecast_es.to_csv(historical_forecast_data)
+
 print("Historical forecast data saved to : ", historical_forecast_data)
 

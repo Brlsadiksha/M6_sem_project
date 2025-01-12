@@ -2,7 +2,7 @@
 
 🚀 Description
 
-Hello! you can find in this Repo all the technical information regading the model we created for our semester project.
+Hello! you can find in this Repo all the technical information regarding the model we created for our semester project.
 
 
 📋 Table of Contents

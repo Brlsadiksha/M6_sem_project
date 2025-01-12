@@ -40,7 +40,7 @@ Hello! you can find in this Repo all the technical information regarding the mod
 
 You can navigate through the Repo as follows:
 
-  1. See the prepocessing code chunk, form we got the final dataset called 'df_clean.csv'
+  1. See the preprocessing code chunk, form we got the final dataset called 'df_clean.csv'
   2. Navigate through the models to see how we trained and tested them. Also see the comparison. We have used the model Exponnetial_Smothing for our prediction. 
   3. Go to the predictions in order to see how the final model pulls data through an API and retrains itself, you can also find information for our Streamlit app.
   
